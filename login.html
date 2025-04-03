@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>areebas loginpage</title>
+    <link rel="stylesheet" href="login.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+        integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+
+<body>
+    <form class="login_form">
+        <h1 class="login_title">Login</h1>
+
+        <div class="input_box">
+            <!-- icon by font awesome -->
+            <i class="fa-solid fa-circle-user"></i>
+
+            <input type="text" id="email" placeholder="Enter Your Username">
+        </div>
+
+        <div class="input_box">
+            <!-- icon -->
+            <i class="fa-solid fa-lock"></i>
+            <input type="password" id="password" placeholder="Enter Your Password">
+        </div>
+
+        <div class="remember_forget_box">
+            <label for="remember">
+                <input type="checkbox" id="remember">
+                Remember
+            </label>
+
+            <a href="#">Forgot password</a>
+        </div>
+
+        <button class="login_btn">Login</button>
+        <p class="register">
+            Dont have an account?
+            <a href="#">Register</a>
+
+        </p>
+        <div class="message_box"></div>
+    </form>
+
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-app.js";
+        import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.4.0/firebase-auth.js";
+        // TODO: Add SDKs for Firebase products that you want to use
+        // https://firebase.google.com/docs/web/setup#available-libraries
+       
+        const btn = document.querySelector(".login_btn");
+        const message=document.querySelector(".message_box");
+
+
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDgruOQ80DAgS8Ywb0YGgZ78rzd9NGkEpI",
+            authDomain: "loginpage-89c18.firebaseapp.com",
+            projectId: "loginpage-89c18",
+            storageBucket: "loginpage-89c18.firebasestorage.app",
+            messagingSenderId: "784303237463",
+            appId: "1:784303237463:web:d405d623d52c5a417ff612"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        btn.addEventListener("click", function(event){
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+            event.preventDefault();
+            createUserWithEmailAndPassword(auth, email, password)
+                .then((userCredential) => {
+                // Signed up 
+                const user = userCredential.user;
+                message.textContent="Account created successfully!"
+                message.classList.add("created")
+                message.classList.remove("error");
+                
+            })
+                .catch((error) => {
+                    const errorCode = error.code;
+                    const errorMessage = error.message;
+                    console.log(errorCode)
+                    message.classList.add("error");
+                    if (errorCode=="auth/email-already-in-use"){
+                        message.textContent="this email is already registered!"
+                    }
+                    else if(errorCode=="auth/invalid-email"){
+                        message.textContent="this email format is invalid!"
+                    }
+                    else if(errorCode=="auth/weak-password"){
+                        message.textContent="Your password must be of atleast 6 characters!"
+                    }
+                    
+
+                
+        });
+        })
+    </script>
+
+
+
+</body>
+
+</html>
