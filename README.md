@@ -1,2 +1,2 @@
 # LoginPage Task1
-created a login page using HTML,CSS and Jvascript integrated with firebase authentication.
+created a login page in my frontend development internship using HTML,CSS and Javascript integrated with firebase authentication.
